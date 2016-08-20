@@ -6,7 +6,7 @@
 #include <SFML/Network/IpAddress.hpp>
 
 extern "C" const struct mrb_data_type mrb_sfml_ip_address_type;
-extern "C" mrb_value mrb_sfml_ip_address_value(mrb_state*, sf::IpAddress*);
+extern "C" mrb_value mrb_sfml_ip_address_value(mrb_state*, sf::IpAddress);
 
 static inline sf::IpAddress*
 mrb_sfml_ip_address_ptr(mrb_state *mrb, mrb_value self)

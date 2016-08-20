@@ -10,7 +10,7 @@
 static sf::Socket*
 mrb_sfml_socket_ptr(mrb_state* mrb, mrb_value self)
 {
-  cxx_mrb_ensure_type_data(mrb, self)
+  cxx_mrb_ensure_type_data(mrb, self);
   void *dptr = DATA_PTR(self);
   const struct mrb_data_type *dt = DATA_TYPE(self);
   if (&mrb_sfml_udp_socket_type == dt || &mrb_sfml_tcp_socket_type == dt) {

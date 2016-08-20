@@ -7,4 +7,5 @@ MRuby::Gem::Specification.new('mruby-sfml-network') do |spec|
   spec.homepage = 'https://github.com/IceDragon200/mruby-sfml-network'
 
   spec.add_dependency 'mruby-sfml-system', github: 'IceDragon200/mruby-sfml-system'
+  spec.cxx.flags << '-fpermissive'
 end
