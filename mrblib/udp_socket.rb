@@ -1,5 +1,5 @@
 module SFML
-  class TcpSocket
+  class UdpSocket
     def send(object)
       if object.is_a?(SFML::Packet)
         send_packet object

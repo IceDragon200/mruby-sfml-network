@@ -1,10 +1,12 @@
 #include <mruby.h>
 #include <mruby/array.h>
 #include <mruby/class.h>
+#include <mruby/data.h>
 #include <SFML/Network/TcpSocket.hpp>
 #include "mrb/cxx/helpers.hxx"
-#include "mrb/sfml/network/tcp_socket.hxx"
 #include "mrb/sfml/network/ip_address.hxx"
+#include "mrb/sfml/network/packet.hxx"
+#include "mrb/sfml/network/tcp_socket.hxx"
 #include "mrb/sfml/system/time.hxx"
 
 static mrb_data_free_func tcp_socket_free = cxx_mrb_data_free<sf::TcpSocket>;
@@ -65,7 +67,7 @@ tcp_socket_disconnect(mrb_state* mrb, mrb_value self)
 }
 
 static mrb_value
-tcp_socket_send(mrb_state* mrb, mrb_value self)
+tcp_socket_send_data(mrb_state* mrb, mrb_value self)
 {
   sf::TcpSocket* socket;
   char* bytes;
@@ -83,7 +85,7 @@ tcp_socket_send(mrb_state* mrb, mrb_value self)
 }
 
 static mrb_value
-tcp_socket_receive(mrb_state* mrb, mrb_value self)
+tcp_socket_receive_data(mrb_state* mrb, mrb_value self)
 {
   sf::TcpSocket* socket;
   char* bytes;
@@ -100,6 +102,26 @@ tcp_socket_receive(mrb_state* mrb, mrb_value self)
   return result;
 }
 
+static mrb_value
+tcp_socket_send_packet(mrb_state* mrb, mrb_value self)
+{
+  sf::TcpSocket* socket;
+  sf::Packet* packet;
+  mrb_get_args(mrb, "d", &packet, &mrb_sfml_packet_type);
+  socket = mrb_sfml_tcp_socket_ptr(mrb, self);
+  return mrb_fixnum_value(socket->send(*packet));
+}
+
+static mrb_value
+tcp_socket_receive_packet(mrb_state* mrb, mrb_value self)
+{
+  sf::TcpSocket* socket;
+  sf::Packet* packet;
+  mrb_get_args(mrb, "d", &packet, &mrb_sfml_packet_type);
+  socket = mrb_sfml_tcp_socket_ptr(mrb, self);
+  return mrb_fixnum_value(socket->receive(*packet));
+}
+
 extern "C" void
 mrb_sfml_tcp_socket_init_bind(mrb_state* mrb, struct RClass* mod)
 {
@@ -111,6 +133,8 @@ mrb_sfml_tcp_socket_init_bind(mrb_state* mrb, struct RClass* mod)
   mrb_define_method(mrb, tcp_socket_class, "remote_port",    tcp_socket_get_remote_port,    MRB_ARGS_NONE());
   mrb_define_method(mrb, tcp_socket_class, "connect",        tcp_socket_connect,            MRB_ARGS_ARG(2,1));
   mrb_define_method(mrb, tcp_socket_class, "disconnect",     tcp_socket_disconnect,         MRB_ARGS_NONE());
-  mrb_define_method(mrb, tcp_socket_class, "send_data",      tcp_socket_send,               MRB_ARGS_REQ(1));
-  mrb_define_method(mrb, tcp_socket_class, "receive",        tcp_socket_receive,            MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, tcp_socket_class, "send_data",      tcp_socket_send_data,          MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, tcp_socket_class, "receive_data",   tcp_socket_receive_data,       MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, tcp_socket_class, "send_packet",    tcp_socket_send_packet,        MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, tcp_socket_class, "receive_packet", tcp_socket_receive_packet,     MRB_ARGS_REQ(1));
 }

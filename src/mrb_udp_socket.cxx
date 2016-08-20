@@ -2,8 +2,9 @@
 #include <mruby/class.h>
 #include <SFML/Network/UdpSocket.hpp>
 #include "mrb/cxx/helpers.hxx"
-#include "mrb/sfml/network/udp_socket.hxx"
 #include "mrb/sfml/network/ip_address.hxx"
+#include "mrb/sfml/network/packet.hxx"
+#include "mrb/sfml/network/udp_socket.hxx"
 #include "mrb/sfml/system/time.hxx"
 
 static mrb_data_free_func udp_socket_free = cxx_mrb_data_free<sf::UdpSocket>;
@@ -69,7 +70,7 @@ udp_socket_send_data(mrb_state* mrb, mrb_value self)
 }
 
 static mrb_value
-udp_socket_receive(mrb_state* mrb, mrb_value self)
+udp_socket_receive_data(mrb_state* mrb, mrb_value self)
 {
   sf::UdpSocket* socket;
   mrb_value result;
@@ -90,15 +91,55 @@ udp_socket_receive(mrb_state* mrb, mrb_value self)
   return result;
 }
 
+static mrb_value
+udp_socket_send_packet(mrb_state* mrb, mrb_value self)
+{
+  sf::UdpSocket* socket;
+  sf::Socket::Status status;
+  mrb_value result;
+  sf::Packet* packet;
+  sf::IpAddress* remoteAddress;
+  mrb_int remotePort;
+  mrb_get_args(mrb, "ddi",
+    &packet, &mrb_sfml_packet_type,
+    &remoteAddress, &mrb_sfml_ip_address_type,
+    &remotePort);
+  socket = mrb_sfml_udp_socket_ptr(mrb, self);
+  status = socket->send(*packet, *remoteAddress, (unsigned short)remotePort);
+  result = mrb_ary_new_capa(mrb, 2);
+  return mrb_fixnum_value(status);
+}
+
+static mrb_value
+udp_socket_receive_packet(mrb_state* mrb, mrb_value self)
+{
+  sf::UdpSocket* socket;
+  mrb_value result;
+  sf::Socket::Status status;
+  sf::Packet* packet;
+  sf::IpAddress remoteAddress;
+  unsigned short remotePort;
+  mrb_get_args(mrb, "d", &packet, &mrb_sfml_packet_type);
+  socket = mrb_sfml_udp_socket_ptr(mrb, self);
+  status = socket->receive(*packet, remoteAddress, remotePort);
+  result = mrb_ary_new_capa(mrb, 3);
+  mrb_ary_set(mrb, result, 0, mrb_fixnum_value(status));
+  mrb_ary_set(mrb, result, 1, mrb_sfml_ip_address_value(mrb, remoteAddress));
+  mrb_ary_set(mrb, result, 2, mrb_fixnum_value(remotePort));
+  return result;
+}
+
 extern "C" void
 mrb_sfml_udp_socket_init_bind(mrb_state* mrb, struct RClass* mod)
 {
   struct RClass* udp_socket_class = mrb_define_class_under(mrb, mod, "UdpSocket", mrb_class_get_under(mrb, mod, "Socket"));
   MRB_SET_INSTANCE_TT(udp_socket_class, MRB_TT_DATA);
-  mrb_define_method(mrb, udp_socket_class, "initialize", udp_socket_initialize,     MRB_ARGS_NONE());
-  mrb_define_method(mrb, udp_socket_class, "local_port", udp_socket_get_local_port, MRB_ARGS_NONE());
-  mrb_define_method(mrb, udp_socket_class, "bind",       udp_socket_bind,           MRB_ARGS_ARG(1,1));
-  mrb_define_method(mrb, udp_socket_class, "unbind",     udp_socket_unbind,         MRB_ARGS_NONE());
-  mrb_define_method(mrb, udp_socket_class, "send_data",  udp_socket_send_data,      MRB_ARGS_REQ(3));
-  mrb_define_method(mrb, udp_socket_class, "receive",    udp_socket_receive,        MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, udp_socket_class, "initialize",     udp_socket_initialize,       MRB_ARGS_NONE());
+  mrb_define_method(mrb, udp_socket_class, "local_port",     udp_socket_get_local_port,   MRB_ARGS_NONE());
+  mrb_define_method(mrb, udp_socket_class, "bind",           udp_socket_bind,             MRB_ARGS_ARG(1,1));
+  mrb_define_method(mrb, udp_socket_class, "unbind",         udp_socket_unbind,           MRB_ARGS_NONE());
+  mrb_define_method(mrb, udp_socket_class, "send_data",      udp_socket_send_data,        MRB_ARGS_REQ(3));
+  mrb_define_method(mrb, udp_socket_class, "receive_data",   udp_socket_receive_data,     MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, udp_socket_class, "send_packet",    udp_socket_send_packet,      MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, udp_socket_class, "receive_packet", udp_socket_receive_packet,   MRB_ARGS_REQ(1));
 }

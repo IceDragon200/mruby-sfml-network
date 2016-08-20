@@ -6,7 +6,7 @@
 #include <SFML/Network/Packet.hpp>
 
 extern "C" const struct mrb_data_type mrb_sfml_packet_type;
-extern "C" mrb_value mrb_sfml_packet_value(mrb_state*, sf::Packet*);
+//extern "C" mrb_value mrb_sfml_packet_value(mrb_state*, sf::Packet*);
 
 static inline sf::Packet*
 mrb_sfml_packet_ptr(mrb_state *mrb, mrb_value self)

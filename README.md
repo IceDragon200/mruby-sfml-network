@@ -4,7 +4,7 @@
 [ ] sf::Ftp
 [ ] sf::Http
 [x] sf::IpAddress
-[ ] sf::Packet
+[x] sf::Packet
 [x] sf::Socket
 [ ] sf::SocketSelector
 [x] sf::TcpListener
