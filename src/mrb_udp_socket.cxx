@@ -74,7 +74,7 @@ udp_socket_receive(mrb_state* mrb, mrb_value self)
   sf::UdpSocket* socket;
   mrb_value result;
   sf::Socket::Status status;
-  size_t received;
+  std::size_t received = 0;
   char* bytes;
   mrb_int len;
   sf::IpAddress remoteAddress;

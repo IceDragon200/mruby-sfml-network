@@ -70,7 +70,7 @@ tcp_socket_send(mrb_state* mrb, mrb_value self)
   sf::TcpSocket* socket;
   char* bytes;
   mrb_int len;
-  std::size_t sent;
+  std::size_t sent = 0;
   mrb_value result;
   sf::Socket::Status status;
   mrb_get_args(mrb, "s", &bytes, &len);
@@ -88,7 +88,7 @@ tcp_socket_receive(mrb_state* mrb, mrb_value self)
   sf::TcpSocket* socket;
   char* bytes;
   mrb_int len;
-  std::size_t received;
+  std::size_t received = 0;
   mrb_value result;
   sf::Socket::Status status;
   mrb_get_args(mrb, "s", &bytes, &len);
