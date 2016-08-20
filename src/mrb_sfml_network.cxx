@@ -1,17 +1,35 @@
 #include <mruby.h>
 #include <mruby/class.h>
 #include <SFML/Network.hpp>
+#include "mrb/sfml/network.hxx"
 
-static struct RClass *sfml_module;
+extern "C" void mrb_sfml_ftp_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_http_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_ip_address_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_packet_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_socket_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_socket_selector_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_tcp_listener_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_tcp_socket_init_bind(mrb_state* mrb, struct RClass* mod);
+extern "C" void mrb_sfml_udp_socket_init_bind(mrb_state* mrb, struct RClass* mod);
 
 extern "C" void
-mrb_mruby_sfml_network_gem_init(mrb_state *mrb)
+mrb_mruby_sfml_network_gem_init(mrb_state* mrb)
 {
-  sfml_module = mrb_define_module(mrb, "SFML");
+  struct RClass* sfml_module = mrb_define_module(mrb, "SFML");
+  mrb_sfml_ftp_init_bind(mrb, sfml_module);
+  mrb_sfml_http_init_bind(mrb, sfml_module);
+  mrb_sfml_ip_address_init_bind(mrb, sfml_module);
+  mrb_sfml_packet_init_bind(mrb, sfml_module);
+  mrb_sfml_socket_init_bind(mrb, sfml_module);
+  mrb_sfml_socket_selector_init_bind(mrb, sfml_module);
+  mrb_sfml_tcp_listener_init_bind(mrb, sfml_module);
+  mrb_sfml_tcp_socket_init_bind(mrb, sfml_module);
+  mrb_sfml_udp_socket_init_bind(mrb, sfml_module);
 }
 
 extern "C" void
-mrb_mruby_sfml_network_gem_final(mrb_state *mrb)
+mrb_mruby_sfml_network_gem_final(mrb_state* mrb)
 {
 
 }
