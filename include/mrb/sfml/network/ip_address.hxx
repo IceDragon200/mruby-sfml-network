@@ -7,6 +7,7 @@
 
 extern "C" const struct mrb_data_type mrb_sfml_ip_address_type;
 extern "C" mrb_value mrb_sfml_ip_address_value(mrb_state*, sf::IpAddress);
+extern "C" sf::IpAddress mrb_sfml_mruby_to_ip_address(mrb_state* mrb, mrb_value self);
 
 static inline sf::IpAddress*
 mrb_sfml_ip_address_ptr(mrb_state *mrb, mrb_value self)

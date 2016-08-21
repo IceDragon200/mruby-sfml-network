@@ -30,11 +30,15 @@ static mrb_value
 tcp_listener_listen(mrb_state* mrb, mrb_value self)
 {
   sf::TcpListener* socket;
-  sf::IpAddress* address = &sf::IpAddress::Any;
+  sf::IpAddress address = sf::IpAddress::Any;
+  mrb_value addressObj;
   mrb_int port;
-  mrb_get_args(mrb, "i|d", &port, &address, &mrb_sfml_ip_address_type);
+  mrb_get_args(mrb, "i|o", &port, &addressObj);
+  if (!mrb_nil_p(addressObj)) {
+    address = mrb_sfml_mruby_to_ip_address(mrb, addressObj);
+  }
   socket = mrb_sfml_tcp_listener_ptr(mrb, self);
-  return mrb_fixnum_value(socket->listen(port, *address));
+  return mrb_fixnum_value(socket->listen(port, address));
 }
 
 static mrb_value

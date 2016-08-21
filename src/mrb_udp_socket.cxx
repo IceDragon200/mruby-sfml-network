@@ -55,14 +55,16 @@ udp_socket_send_data(mrb_state* mrb, mrb_value self)
   mrb_value result;
   char* bytes;
   mrb_int len;
-  sf::IpAddress* remoteAddress;
+  mrb_value remoteAddressObj;
+  sf::IpAddress remoteAddress;
   mrb_int remotePort;
-  mrb_get_args(mrb, "sdi",
+  mrb_get_args(mrb, "soi",
     &bytes, &len,
-    &remoteAddress, &mrb_sfml_ip_address_type,
+    &remoteAddressObj,
     &remotePort);
   socket = mrb_sfml_udp_socket_ptr(mrb, self);
-  status = socket->send(bytes, len * sizeof(char), *remoteAddress, (unsigned short)remotePort);
+  remoteAddress = mrb_sfml_mruby_to_ip_address(mrb, remoteAddressObj);
+  status = socket->send(bytes, len * sizeof(char), remoteAddress, (unsigned short)remotePort);
   result = mrb_ary_new_capa(mrb, 2);
   mrb_ary_set(mrb, result, 0, mrb_fixnum_value(status));
   mrb_ary_set(mrb, result, 1, mrb_fixnum_value(len));
@@ -98,14 +100,16 @@ udp_socket_send_packet(mrb_state* mrb, mrb_value self)
   sf::Socket::Status status;
   mrb_value result;
   sf::Packet* packet;
-  sf::IpAddress* remoteAddress;
+  mrb_value remoteAddressObj;
+  sf::IpAddress remoteAddress;
   mrb_int remotePort;
-  mrb_get_args(mrb, "ddi",
+  mrb_get_args(mrb, "doi",
     &packet, &mrb_sfml_packet_type,
-    &remoteAddress, &mrb_sfml_ip_address_type,
+    &remoteAddressObj,
     &remotePort);
+  remoteAddress = mrb_sfml_mruby_to_ip_address(mrb, remoteAddressObj);
   socket = mrb_sfml_udp_socket_ptr(mrb, self);
-  status = socket->send(*packet, *remoteAddress, (unsigned short)remotePort);
+  status = socket->send(*packet, remoteAddress, (unsigned short)remotePort);
   result = mrb_ary_new_capa(mrb, 2);
   return mrb_fixnum_value(status);
 }

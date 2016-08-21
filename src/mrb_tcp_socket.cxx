@@ -46,16 +46,18 @@ tcp_socket_get_remote_port(mrb_state* mrb, mrb_value self)
 static mrb_value
 tcp_socket_connect(mrb_state* mrb, mrb_value self)
 {
-  sf::IpAddress* address;
+  sf::IpAddress address;
+  mrb_value remoteAddressObj;
   mrb_int remotePort;
   sf::Time* time = &sf::Time::Zero;
   sf::TcpSocket* socket;
-  mrb_get_args(mrb, "di|d",
-    &address, &mrb_sfml_ip_address_type,
+  mrb_get_args(mrb, "oi|d",
+    &remoteAddressObj,
     &remotePort,
     &time, &mrb_sfml_time_type);
+  address = mrb_sfml_mruby_to_ip_address(mrb, remoteAddressObj);
   socket = mrb_sfml_tcp_socket_ptr(mrb, self);
-  return mrb_fixnum_value(socket->connect(*address, (unsigned short)remotePort, *time));
+  return mrb_fixnum_value(socket->connect(address, (unsigned short)remotePort, *time));
 }
 
 static mrb_value

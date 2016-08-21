@@ -17,6 +17,15 @@ mrb_sfml_ip_address_value(mrb_state* mrb, sf::IpAddress newAddress)
   return result;
 }
 
+extern "C" sf::IpAddress
+mrb_sfml_mruby_to_ip_address(mrb_state* mrb, mrb_value self)
+{
+  if (mrb_type(self) == MRB_TT_STRING) {
+    return sf::IpAddress(mrb_string_value_ptr(mrb, self));
+  }
+  return *mrb_sfml_ip_address_ptr(mrb, self);
+}
+
 static mrb_value
 ip_address_initialize(mrb_state* mrb, mrb_value self)
 {
