@@ -160,16 +160,16 @@ mrb_sfml_packet_init_bind(mrb_state* mrb, struct RClass* mod)
   mrb_define_method(mrb, packet_class, "read_double",     abstract_packet_read<double>,          MRB_ARGS_NONE());
   mrb_define_method(mrb, packet_class, "read_cstring",    abstract_packet_read<char*>,           MRB_ARGS_NONE());
 
-  mrb_define_method(mrb, packet_class, "write_bool",      packet_write_bool,                     MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_int8",      abstract_packet_write_int<sf::Int8>,   MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_int16",     abstract_packet_write_int<sf::Int16>,  MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_int32",     abstract_packet_write_int<sf::Int32>,  MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_int64",     abstract_packet_write_int<sf::Int64>,  MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_uint8",     abstract_packet_write_int<sf::Uint8>,  MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_uint16",    abstract_packet_write_int<sf::Uint16>, MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_uint32",    abstract_packet_write_int<sf::Uint32>, MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_uint64",    abstract_packet_write_int<sf::Uint64>, MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_float",     abstract_packet_write_float<float>,    MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_double",    abstract_packet_write_float<double>,   MRB_ARGS_NONE());
-  mrb_define_method(mrb, packet_class, "write_cstring",   packet_write_string,                   MRB_ARGS_NONE());
+  mrb_define_method(mrb, packet_class, "write_bool",      packet_write_bool,                     MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_int8",      abstract_packet_write_int<sf::Int8>,   MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_int16",     abstract_packet_write_int<sf::Int16>,  MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_int32",     abstract_packet_write_int<sf::Int32>,  MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_int64",     abstract_packet_write_int<sf::Int64>,  MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_uint8",     abstract_packet_write_int<sf::Uint8>,  MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_uint16",    abstract_packet_write_int<sf::Uint16>, MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_uint32",    abstract_packet_write_int<sf::Uint32>, MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_uint64",    abstract_packet_write_int<sf::Uint64>, MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_float",     abstract_packet_write_float<float>,    MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_double",    abstract_packet_write_float<double>,   MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, packet_class, "write_cstring",   packet_write_string,                   MRB_ARGS_REQ(1));
 }
