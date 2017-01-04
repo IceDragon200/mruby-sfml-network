@@ -6,6 +6,7 @@
 #include "mrb/sfml/network/socket.hxx"
 #include "mrb/sfml/network/tcp_socket.hxx"
 #include "mrb/sfml/network/udp_socket.hxx"
+#include "mrb/sfml/helpers.hxx"
 
 static sf::Socket*
 mrb_sfml_socket_ptr(mrb_state* mrb, mrb_value self)
@@ -39,7 +40,7 @@ socket_get_blocking(mrb_state* mrb, mrb_value self)
   return mrb_bool_value(socket->isBlocking());
 }
 
-extern "C" void
+MRB_SFML_EXTERN void
 mrb_sfml_socket_init_bind(mrb_state* mrb, struct RClass* mod)
 {
   struct RClass* socket_class = mrb_define_class_under(mrb, mod, "Socket", mrb->object_class);

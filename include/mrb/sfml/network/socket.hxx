@@ -4,5 +4,6 @@
 #include <mruby.h>
 #include <mruby/data.h>
 #include <SFML/Network/Socket.hpp>
+#include "mrb/sfml/helpers.hxx"
 
 #endif

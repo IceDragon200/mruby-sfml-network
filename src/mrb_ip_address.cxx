@@ -4,11 +4,12 @@
 #include "mrb/cxx/helpers.hxx"
 #include "mrb/sfml/network/ip_address.hxx"
 #include "mrb/sfml/system/time.hxx"
+#include "mrb/sfml/helpers.hxx"
 
 static mrb_data_free_func ip_address_free = cxx_mrb_data_free<sf::IpAddress>;
-extern "C" const struct mrb_data_type mrb_sfml_ip_address_type = { "sf::IpAddress", ip_address_free };
+MRB_SFML_EXTERN const struct mrb_data_type mrb_sfml_ip_address_type = { "sf::IpAddress", ip_address_free };
 
-extern "C" mrb_value
+MRB_SFML_EXTERN mrb_value
 mrb_sfml_ip_address_value(mrb_state* mrb, sf::IpAddress newAddress)
 {
   mrb_value result = mrb_obj_new(mrb, mrb_class_get_under(mrb, mrb_module_get(mrb, "SFML"), "IpAddress"), 0, NULL);
@@ -17,7 +18,7 @@ mrb_sfml_ip_address_value(mrb_state* mrb, sf::IpAddress newAddress)
   return result;
 }
 
-extern "C" sf::IpAddress
+MRB_SFML_EXTERN sf::IpAddress
 mrb_sfml_mruby_to_ip_address(mrb_state* mrb, mrb_value self)
 {
   if (mrb_type(self) == MRB_TT_STRING) {
@@ -106,7 +107,7 @@ MRB_IP_BOOL_OPERATOR(less_than_or_equal_to, <=);
 MRB_IP_BOOL_OPERATOR(greater_than, >);
 MRB_IP_BOOL_OPERATOR(greater_than_or_equal_to, >=);
 
-extern "C" void
+MRB_SFML_EXTERN void
 mrb_sfml_ip_address_init_bind(mrb_state* mrb, struct RClass* mod)
 {
   struct RClass* tcp_socket_class = mrb_define_class_under(mrb, mod, "IpAddress", mrb->object_class);

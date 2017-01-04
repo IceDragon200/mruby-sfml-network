@@ -4,9 +4,10 @@
 #include <mruby.h>
 #include <mruby/data.h>
 #include <SFML/Network/Packet.hpp>
+#include "mrb/sfml/helpers.hxx"
 
-extern "C" const struct mrb_data_type mrb_sfml_packet_type;
-//extern "C" mrb_value mrb_sfml_packet_value(mrb_state*, sf::Packet*);
+MRB_SFML_EXTERN const struct mrb_data_type mrb_sfml_packet_type;
+//MRB_SFML_EXTERN mrb_value mrb_sfml_packet_value(mrb_state*, sf::Packet*);
 
 static inline sf::Packet*
 mrb_sfml_packet_ptr(mrb_state *mrb, mrb_value self)

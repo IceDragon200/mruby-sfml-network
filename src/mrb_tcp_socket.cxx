@@ -8,9 +8,10 @@
 #include "mrb/sfml/network/packet.hxx"
 #include "mrb/sfml/network/tcp_socket.hxx"
 #include "mrb/sfml/system/time.hxx"
+#include "mrb/sfml/helpers.hxx"
 
 static mrb_data_free_func tcp_socket_free = cxx_mrb_data_free<sf::TcpSocket>;
-extern "C" const struct mrb_data_type mrb_sfml_tcp_socket_type = { "sf::TcpSocket", tcp_socket_free };
+MRB_SFML_EXTERN const struct mrb_data_type mrb_sfml_tcp_socket_type = { "sf::TcpSocket", tcp_socket_free };
 
 static mrb_value
 tcp_socket_initialize(mrb_state* mrb, mrb_value self)
@@ -124,7 +125,7 @@ tcp_socket_receive_packet(mrb_state* mrb, mrb_value self)
   return mrb_fixnum_value(socket->receive(*packet));
 }
 
-extern "C" void
+MRB_SFML_EXTERN void
 mrb_sfml_tcp_socket_init_bind(mrb_state* mrb, struct RClass* mod)
 {
   struct RClass* tcp_socket_class = mrb_define_class_under(mrb, mod, "TcpSocket", mrb_class_get_under(mrb, mod, "Socket"));

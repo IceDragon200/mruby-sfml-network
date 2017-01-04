@@ -5,9 +5,10 @@
 #include "mrb/sfml/network/tcp_listener.hxx"
 #include "mrb/sfml/network/tcp_socket.hxx"
 #include "mrb/sfml/network/ip_address.hxx"
+#include "mrb/sfml/helpers.hxx"
 
 static mrb_data_free_func tcp_listener_free = cxx_mrb_data_free<sf::TcpListener>;
-extern "C" const struct mrb_data_type mrb_sfml_tcp_listener_type = { "sf::TcpListener", tcp_listener_free };
+MRB_SFML_EXTERN const struct mrb_data_type mrb_sfml_tcp_listener_type = { "sf::TcpListener", tcp_listener_free };
 
 static mrb_value
 tcp_listener_initialize(mrb_state* mrb, mrb_value self)
@@ -59,7 +60,7 @@ tcp_listener_accept(mrb_state* mrb, mrb_value self)
   return mrb_fixnum_value(listener->accept(*socket));
 }
 
-extern "C" void
+MRB_SFML_EXTERN void
 mrb_sfml_tcp_listener_init_bind(mrb_state* mrb, struct RClass* mod)
 {
   struct RClass* tcp_listener_class = mrb_define_class_under(mrb, mod, "TcpListener", mrb_class_get_under(mrb, mod, "Socket"));

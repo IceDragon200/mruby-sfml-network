@@ -4,9 +4,10 @@
 #include <mruby.h>
 #include <mruby/data.h>
 #include <SFML/Network/Http.hpp>
+#include "mrb/sfml/helpers.hxx"
 
-extern "C" const struct mrb_data_type mrb_sfml_http_type;
-//extern "C" mrb_value mrb_sfml_http_value(mrb_state*, sf::Http*);
+MRB_SFML_EXTERN const struct mrb_data_type mrb_sfml_http_type;
+//MRB_SFML_EXTERN mrb_value mrb_sfml_http_value(mrb_state*, sf::Http*);
 
 static inline sf::Http*
 mrb_sfml_http_ptr(mrb_state *mrb, mrb_value self)

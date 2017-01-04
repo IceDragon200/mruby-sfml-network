@@ -6,9 +6,10 @@
 #include "mrb/sfml/network/packet.hxx"
 #include "mrb/sfml/network/udp_socket.hxx"
 #include "mrb/sfml/system/time.hxx"
+#include "mrb/sfml/helpers.hxx"
 
 static mrb_data_free_func udp_socket_free = cxx_mrb_data_free<sf::UdpSocket>;
-extern "C" const struct mrb_data_type mrb_sfml_udp_socket_type = { "sf::UdpSocket", udp_socket_free };
+MRB_SFML_EXTERN const struct mrb_data_type mrb_sfml_udp_socket_type = { "sf::UdpSocket", udp_socket_free };
 
 static mrb_value
 udp_socket_initialize(mrb_state* mrb, mrb_value self)
@@ -133,7 +134,7 @@ udp_socket_receive_packet(mrb_state* mrb, mrb_value self)
   return result;
 }
 
-extern "C" void
+MRB_SFML_EXTERN void
 mrb_sfml_udp_socket_init_bind(mrb_state* mrb, struct RClass* mod)
 {
   struct RClass* udp_socket_class = mrb_define_class_under(mrb, mod, "UdpSocket", mrb_class_get_under(mrb, mod, "Socket"));
